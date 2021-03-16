@@ -9,4 +9,5 @@ import java.util.Optional;
 @Component
 public interface UserRepository extends CrudRepository<User, Integer> {
     Optional<User> findUserByUsername(String username);
+    void deleteUserByUsername(String username);
 }

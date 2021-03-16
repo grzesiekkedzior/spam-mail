@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -14,18 +15,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class CustomAuthenticationFilter implements Filter {
+public class CustomAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     AuthenticationManager authenticationManager;
 
     @Override
-    public void doFilter(ServletRequest request,
-                         ServletResponse response,
-                         FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-        String name = httpRequest.getHeader("username");
-        String password = httpRequest.getHeader("password");
+    protected void doFilterInternal(HttpServletRequest httpServletRequest,
+                                    HttpServletResponse httpServletResponse,
+                                    FilterChain filterChain) throws ServletException, IOException {
+        String name = httpServletRequest.getHeader("username");
+        String password = httpServletRequest.getHeader("password");
 
         CustomAuthentication auth = new CustomAuthentication(name, password);
 
@@ -33,12 +32,17 @@ public class CustomAuthenticationFilter implements Filter {
             final Authentication authenticate = authenticationManager.authenticate(auth);
             if (authenticate.isAuthenticated()) {
                 SecurityContextHolder.getContext().setAuthentication(authenticate);
-                chain.doFilter(request, response);
             } else {
-                httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
             }
         } catch (AuthenticationException exception) {
-            httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return !request.getServletPath().equals("/login");
     }
 }

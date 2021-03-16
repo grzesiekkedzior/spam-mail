@@ -11,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletResponse;
-
 @Component
 public class UserAuthenticationProvider implements AuthenticationProvider {
     private final UserDetailsService userDetailsService;
