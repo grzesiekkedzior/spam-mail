@@ -1,0 +1,39 @@
+<p>admin-panel works!</p>
+
+
+
+
+<div class="bgwrapp"></div>
+<div class="modal-dialog text-center">
+  <div class="col-sm-12 ">
+    <div class="col-12 modal-content">
+
+      <div class="col-12 form-group">
+          <div class="form-group">
+            <input class="form-control" placeholder="do (test@example.com)" type="text" name="to" [(ngModel)]="to" required>
+          </div>
+          <div class="form-group">
+            <input placeholder="temat" type="text" class="form-control" name="subject"  [(ngModel)]="subject"/>
+          </div>
+        <div class="form-group">
+          <textarea  placeholder="tresć" type="text" class="form-control" name="content"  [(ngModel)]="content" cols="30" rows="10"></textarea>
+          </div>
+        <div class="form-group">
+            <input placeholder="wyślij o (hh.mm.ss)" type="text" class="form-control" name="sentAt" [(ngModel)]="sentAt"/>
+          </div>
+          <div class="form-group">
+            <input
+              style="display: none"
+              type="file" (change)="onFileChanged($event)"
+              #fileInput>
+          </div>
+          <button (click)="fileInput.click()" class="btn btn-success">Dodaj zdjęcie</button>
+          <button (click)="onUpload()" class="btn btn-success">Wyślij maila</button>
+
+      </div>
+
+
+
+    </div>
+  </div>
+</div>
