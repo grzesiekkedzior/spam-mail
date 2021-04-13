@@ -4,6 +4,7 @@ package com.mail.spammer.services;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 
 @Service
+@Slf4j
 public class MailGunEmailService  {
 
     private String password;
@@ -44,7 +46,9 @@ public class MailGunEmailService  {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(4);
         scheduler.schedule(() -> {
                     try {
+                        log.info("BEFORE EMAIL SENT to: [{}]",to);
                         sendInlineImage(to,subject,content, file);
+                        log.info("AFTER EMAIL SENT to: [{}]",to);
 
                     } catch (IOException | UnirestException e) {
                         e.printStackTrace();

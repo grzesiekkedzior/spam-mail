@@ -26,8 +26,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(filter , UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests()
                 .antMatchers("/users/**").authenticated()
+                .antMatchers("/api/emails").authenticated()
                 .antMatchers("/signup").permitAll()
-                .and().formLogin().loginPage("/login").permitAll()
+                .antMatchers("/login").authenticated()
                 .and().cors()
                 .and().csrf().disable();
     }

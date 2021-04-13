@@ -6,10 +6,11 @@ import { LoginComponent } from './login/login.component';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import {RouterModule} from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import {BasicAuthInterceptor} from './services/BasicAuthInterceptor';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserAnimationsModule,
     ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [ { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

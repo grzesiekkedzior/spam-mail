@@ -20,7 +20,7 @@ public class EmailController {
 
     @PostMapping
     @CrossOrigin
-    public ResponseEntity<Void> sendEmai(@RequestPart("file") MultipartFile file,
+    public ResponseEntity<Void> sendEmail(@RequestPart("file") MultipartFile file,
                                          @RequestPart("to") String to,@RequestPart("subject") String subject,
                                          @RequestPart("content") String content,
                                          @RequestPart("sentAt") String sentAt

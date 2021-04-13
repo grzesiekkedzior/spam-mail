@@ -9,6 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.BadRequestException;
+
 @Service
 public class SecurityUserService implements UserDetailsManager {
     private final UserRepositoryService userRepositoryService;
@@ -24,6 +26,7 @@ public class SecurityUserService implements UserDetailsManager {
 
     @Override
     public void createUser(UserDetails userDetails) {
+        userRepositoryService.findByUserName(userDetails.getUsername()).ifPresent(user -> new BadRequestException("User o podanym username juz istnieje byczq"));
         userRepositoryService.saveUser(new User(
                 userDetails.getUsername(),
                 passwordEncoder.encode(userDetails.getPassword())

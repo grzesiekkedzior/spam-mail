@@ -6,6 +6,7 @@ import com.mail.spammer.entities.User;
 import com.mail.spammer.repositories.UserRepositoryService;
 import com.mail.spammer.services.SecurityUserService;
 import com.mail.spammer.services.SecurityUser;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,16 +20,19 @@ public class UserController {
         this.userRepositoryService = userRepositoryService;
     }
 
+    @CrossOrigin
     @GetMapping("/login")
-    public String signInUser() {
-        return "Hello";
+    public ResponseEntity<Void> signInUser() {
+        return ResponseEntity.ok().build();
     }
 
+    @CrossOrigin
     @GetMapping("/users/{username}")
-    public ResponceUserDto getUserDto(@PathVariable String username) {
-        return getResponceUserDto(username);
+    public ResponseEntity<ResponceUserDto> getUserDto(@PathVariable String username) {
+        return ResponseEntity.ok(getResponceUserDto(username));
     }
 
+    @CrossOrigin
     @PostMapping("/signup")
     public void registerUser(@RequestBody User user) {
         securityUserService.createUser(getUserDetails(user));
